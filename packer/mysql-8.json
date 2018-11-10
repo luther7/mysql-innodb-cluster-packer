@@ -39,6 +39,16 @@
             "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
         }
     ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "script": "scripts/consul.sh"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/mysql-8.sh"
+        }
+    ],
     "post-processors": [
         {
             "type": "vagrant",
