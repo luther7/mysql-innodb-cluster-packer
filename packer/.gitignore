@@ -1,5 +1,5 @@
-box
+build
 iso
 output-virtualbox-iso
 packer_cache
-vagrant
+.vagrant

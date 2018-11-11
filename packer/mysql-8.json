@@ -7,8 +7,9 @@
             "boot_command": [
                 "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
             ],
-            "boot_wait": "6s",
             "http_directory": "http",
+            "boot_wait": "6s",
+            "headless": "false",
             "guest_os_type": "RedHat_64",
             "iso_urls": [
                 "CentOS-7-x86_64-Minimal-1804.iso",
@@ -16,43 +17,23 @@
             ],
             "iso_checksum": "714acc0aefb32b7d51b515e25546835e55a90da9fb00417fbee2d03a62801efd",
             "iso_checksum_type": "sha256",
-            "guest_additions_path": "VBoxGuestAdditions_{{ .Version }}.iso",
-            "virtualbox_version_file": ".vbox_version",
             "vm_name": "mysql-8-centos-7-x86_64",
             "vboxmanage": [
-                [
-                    "modifyvm",
-                    "{{ .Name }}",
-                    "--cpus",
-                    "2"
-                ],
-                [
-                    "modifyvm",
-                    "{{ .Name }}",
-                    "--memory",
-                    "1024"
-                ]
+                ["modifyvm", "{{ .Name }}", "--cpus", "2"],
+                ["modifyvm", "{{ .Name }}", "--memory", "1024"]
             ],
             "ssh_username": "packer",
             "ssh_password": "packer",
-            "ssh_wait_timeout": "600s",
+            "ssh_wait_timeout": "1200s",
             "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
         }
     ],
     "provisioners": [
-        {
-            "type": "shell",
-            "script": "scripts/consul.sh"
-        },
-        {
-            "type": "shell",
-            "script": "scripts/mysql-8.sh"
-        }
     ],
     "post-processors": [
         {
             "type": "vagrant",
-            "output": "box/mysql-8-centos-7-x86_64.box"
+            "output": "build/mysql-8-centos-7-x86_64.box"
         }
     ]
 }
