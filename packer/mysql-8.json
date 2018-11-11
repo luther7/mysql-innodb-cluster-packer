@@ -24,11 +24,20 @@
             ],
             "ssh_username": "packer",
             "ssh_password": "packer",
-            "ssh_wait_timeout": "1200s",
-            "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
+            "ssh_wait_timeout": "600s",
+            "shutdown_command": "sudo /sbin/halt -p"
         }
     ],
     "provisioners": [
+        {
+            "type": "shell",
+            "execute_command": "sudo {{ .Vars }} sh {{ .Path }}",
+            "scripts": [
+                "scripts/vbox-additions",
+                "scripts/consul",
+                "scripts/mysql-8"
+            ]
+        }
     ],
     "post-processors": [
         {

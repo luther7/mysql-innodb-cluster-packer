@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+function message {
+    TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+    echo -e "[${TIMESTAMP}] [mysql-8] ${1}"
+}
+
+message "MySQL 8 install script"
+
+message "Started"
+
+message "Complete"

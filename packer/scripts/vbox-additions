@@ -1,0 +1,28 @@
+#!/bin/sh
+
+set -e
+
+VBOX_GUEST_ADDITIONS_ISO=/home/packer/VBoxGuestAdditions.iso
+
+function message {
+    TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+    echo -e "[${TIMESTAMP}] [vbox-additions] ${1}"
+}
+
+message "VBox Additions script"
+message "VBOX_GUEST_ADDITIONS_ISO=${VBOX_GUEST_ADDITIONS_ISO}"
+message "Started"
+
+message "Mounting guest additions ISO"
+mount -o loop ${VBOX_GUEST_ADDITIONS_ISO} /mnt
+
+message "Running guest additions script"
+sh /mnt/VBoxLinuxAdditions.run
+
+message "Unmounting guest additions ISO"
+umount /mnt
+
+message "Deleting guest additions ISO"
+rm -rf ${VBOX_GUEST_ADDITIONS_ISO}
+
+message "Complete"
