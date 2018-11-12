@@ -12,32 +12,23 @@
             "headless": "false",
             "guest_os_type": "RedHat_64",
             "iso_urls": [
-                "CentOS-7-x86_64-Minimal-1804.iso",
-                "https://mirror.aarnet.edu.au/pub/centos/7.5.1804/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso"
+                "CentOS-7-x86_64-DVD-1804.iso",
+                "https://mirror.aarnet.edu.au/pub/centos/7.5.1804/isos/x86_64/CentOS-7-x86_64-DVD-1804.iso"
             ],
-            "iso_checksum": "714acc0aefb32b7d51b515e25546835e55a90da9fb00417fbee2d03a62801efd",
+            "iso_checksum": "506e4e06abf778c3435b4e5745df13e79ebfc86565d7ea1e128067ef6b5a6345",
             "iso_checksum_type": "sha256",
             "vm_name": "mysql-8-centos-7-x86_64",
             "vboxmanage": [
-                ["modifyvm", "{{ .Name }}", "--cpus", "2"],
-                ["modifyvm", "{{ .Name }}", "--memory", "1024"]
+                ["modifyvm", "{{ .Name }}", "--cpus", "4"],
+                ["modifyvm", "{{ .Name }}", "--memory", "2048"]
             ],
             "ssh_username": "packer",
             "ssh_password": "packer",
-            "ssh_wait_timeout": "600s",
+            "ssh_wait_timeout": "4800s",
             "shutdown_command": "sudo /sbin/halt -p"
         }
     ],
     "provisioners": [
-        {
-            "type": "shell",
-            "execute_command": "sudo {{ .Vars }} sh {{ .Path }}",
-            "scripts": [
-                "scripts/vbox-additions",
-                "scripts/consul",
-                "scripts/mysql-8"
-            ]
-        }
     ],
     "post-processors": [
         {
