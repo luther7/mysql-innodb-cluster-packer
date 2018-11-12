@@ -14,13 +14,13 @@ message "VBOX_GUEST_ADDITIONS_ISO=${VBOX_GUEST_ADDITIONS_ISO}"
 message "Started"
 
 message "Mounting guest additions ISO"
-mount -o loop ${VBOX_GUEST_ADDITIONS_ISO} /mnt
+mount -o loop ${VBOX_GUEST_ADDITIONS_ISO} /mnt > /dev/null
 
 message "Running guest additions script"
 sh /mnt/VBoxLinuxAdditions.run
 
 message "Unmounting guest additions ISO"
-umount /mnt
+umount /mnt > /dev/null
 
 message "Deleting guest additions ISO"
 rm -rf ${VBOX_GUEST_ADDITIONS_ISO}
