@@ -2,10 +2,9 @@
 
 **WIP**
 
-TODO:
 - [X] CentOS Packer template
 - [X] Consul install script
 - [ ] MySQL 8 install script
-- [ ] Bootstrap InnoDB Cluster script
 - [ ] InnoDB Cluster Consul service
-- [ ] Script to watch Consul service rejoin missing nodes 
+- [ ] Bootstrap InnoDB Cluster via Consul watcher
+- [ ] Rejoin missing nodes via Consul watcher
