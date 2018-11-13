@@ -29,6 +29,13 @@
         }
     ],
     "provisioners": [
+        {
+            "type": "shell",
+            "execute_command": "sudo {{ .Vars }} sh {{ .Path }}",
+            "scripts": [
+                "scripts/vbox-additions"
+            ]
+        }
     ],
     "post-processors": [
         {
