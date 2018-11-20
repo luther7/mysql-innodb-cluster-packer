@@ -1,0 +1,16 @@
+#!/bin/bash -eux
+
+function message {
+    TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+    echo -e "[${TIMESTAMP}] [zero] ${1}"
+}
+
+message "Zero script"
+message "Started"
+
+message "Zeroing remaining free space"
+dd if=/dev/zero of=/EMPTY bs=1M
+rm -f /EMPTY
+sync
+
+message "Complete"
