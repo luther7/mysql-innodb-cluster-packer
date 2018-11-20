@@ -8,4 +8,8 @@ function message {
 message "VBox Cleanup script"
 message "Started"
 
+message "Cleaning packages"
+apt-get -y autoremove
+apt-get -y clean
+
 message "Complete"
