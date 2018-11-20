@@ -1,0 +1,15 @@
+#!/bin/bash -eux
+
+function message {
+    TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+    echo -e "[${TIMESTAMP}] [vbox-cleanup] ${1}"
+}
+
+message "VBox Cleanup script"
+message "Started"
+
+message "Cleaning packages"
+apt autoremove
+apt update
+
+message "Complete"

@@ -1,0 +1,11 @@
+#!/bin/bash -eux
+
+function message {
+    TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+    echo -e "[${TIMESTAMP}] [vbox-setup] ${1}"
+}
+
+message "VBox Setup script"
+message "Started"
+
+message "Complete"

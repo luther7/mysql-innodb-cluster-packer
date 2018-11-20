@@ -9,12 +9,6 @@ message "VBox Cleanup script"
 message "Started"
 
 message "Cleaning packages"
-apt autoremove
-apt update
-
-# message "Zero out free space"
-# dd if=/dev/zero of=/EMPTY bs=1M
-# rm -f /EMPTY
-# sync
+yum clean all
 
 message "Complete"
