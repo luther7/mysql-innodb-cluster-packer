@@ -1,8 +1,4 @@
-#!/bin/sh
-
-set -e
-
-VBOX_GUEST_ADDITIONS_ISO=/home/packer/VBoxGuestAdditions.iso
+#!/bin/bash -eux
 
 function message {
     TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
@@ -10,11 +6,13 @@ function message {
 }
 
 message "VBox Additions script"
-message "VBOX_GUEST_ADDITIONS_ISO=${VBOX_GUEST_ADDITIONS_ISO}"
 message "Started"
 
+VBOX_VERSION=$(cat /home/packer/.vbox_version)
+VBOX_GUEST_ADDITIONS_ISO=/home/packer/VBoxGuestAdditions_${VBOX_VERSION}.iso
+
 message "Mounting guest additions ISO"
-mount -o loop ${VBOX_GUEST_ADDITIONS_ISO} /mnt > /dev/null
+mount -o loop ${VBOX_GUEST_ADDITIONS_ISO} /mnt
 
 message "Running guest additions script"
 sh /mnt/VBoxLinuxAdditions.run

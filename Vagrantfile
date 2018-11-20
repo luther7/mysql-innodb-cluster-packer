@@ -6,7 +6,7 @@ EOF
 SCRIPT
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "file://build/mysql-8-centos-7-x86_64.box"
+  config.vm.box = "file://build/mysql-8-ubuntu-18.04.1-x86_64.box"
   config.vm.synced_folder ".", "/vagrant"
   config.ssh.username = "packer"
   config.ssh.password = "packer"

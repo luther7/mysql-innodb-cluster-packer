@@ -1,6 +1,4 @@
-#!/bin/sh
-
-set -e
+#!/bin/bash -eux
 
 MYSQL_PASSWORD=Password1234!
 MYSQL_SERVER_VERSION=8.0.13.el7

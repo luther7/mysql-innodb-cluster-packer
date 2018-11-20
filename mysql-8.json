@@ -4,43 +4,76 @@
     "builders": [
         {
             "type": "virtualbox-iso",
-            "boot_command": [
-                "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
-            ],
-            "http_directory": "http",
-            "boot_wait": "6s",
+            "vm_name": "mysql-8-ubuntu-18.04.1-x86_64",
+
             "headless": "false",
-            "guest_os_type": "RedHat_64",
-            "iso_urls": [
-                "CentOS-7-x86_64-DVD-1804.iso",
-                "https://mirror.aarnet.edu.au/pub/centos/7.5.1804/isos/x86_64/CentOS-7-x86_64-DVD-1804.iso"
+
+            "http_directory": "http",
+            "boot_command": [
+                "<esc><wait>",
+                "<esc><wait>",
+                "<enter><wait>",
+                "/install/vmlinuz<wait>",
+                " auto<wait>",
+                " console-setup/ask_detect=false<wait>",
+                " console-setup/layoutcode=us<wait>",
+                " console-setup/modelcode=pc105<wait>",
+                " debconf/frontend=noninteractive<wait>",
+                " debian-installer=en_US<wait>",
+                " fb=false<wait>",
+                " initrd=/install/initrd.gz<wait>",
+                " kbd-chooser/method=us<wait>",
+                " keyboard-configuration/layout=USA<wait>",
+                " keyboard-configuration/variant=USA<wait>",
+                " locale=en_US<wait>",
+                " netcfg/get_domain=vm<wait>",
+                " netcfg/get_hostname=vagrant<wait>",
+                " grub-installer/bootdev=/dev/sda<wait>",
+                " noapic<wait>",
+                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+                " -- <wait>",
+                "<enter><wait>"
             ],
-            "iso_checksum": "506e4e06abf778c3435b4e5745df13e79ebfc86565d7ea1e128067ef6b5a6345",
+            "boot_wait": "6s",
+
+            "guest_additions_path": "VBoxGuestAdditions_{{ .Version }}.iso",
+            "virtualbox_version_file": ".vbox_version",
+
+            "guest_os_type": "Ubuntu_64",
+            "iso_urls": [
+                "iso/ubuntu-18.04.1-server-amd64.iso",
+                "http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/ubuntu-18.04.1-server-amd64.iso"
+            ],
+            "iso_checksum": "a5b0ea5918f850124f3d72ef4b85bda82f0fcd02ec721be19c1a6952791c8ee8",
             "iso_checksum_type": "sha256",
-            "vm_name": "mysql-8-centos-7-x86_64",
+
             "vboxmanage": [
                 ["modifyvm", "{{ .Name }}", "--cpus", "4"],
                 ["modifyvm", "{{ .Name }}", "--memory", "2048"]
             ],
+
             "ssh_username": "packer",
             "ssh_password": "packer",
             "ssh_wait_timeout": "4800s",
-            "shutdown_command": "sudo /sbin/halt -p"
+
+            "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
         }
     ],
     "provisioners": [
         {
             "type": "shell",
-            "execute_command": "sudo {{ .Vars }} sh {{ .Path }}",
+            "execute_command": "echo 'packer' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
             "scripts": [
-                "scripts/vbox-additions"
+                "scripts/vbox-setup",
+                "scripts/vbox-additions",
+                "scripts/vbox-cleanup"
             ]
         }
     ],
     "post-processors": [
         {
             "type": "vagrant",
-            "output": "build/mysql-8-centos-7-x86_64.box"
+            "output": "build/mysql-8-ubuntu-18.04.1-x86_64.box"
         }
     ]
 }

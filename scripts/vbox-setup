@@ -1,0 +1,18 @@
+#!/bin/bash -eux
+
+function message {
+    TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+    echo -e "[${TIMESTAMP}] [vbox-setup] ${1}"
+}
+
+message "VBox Setup script"
+message "Started"
+
+message "Add packer user to sudoers"
+echo 'packer ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/99_packer
+chmod 440 /etc/sudoers.d/99_packer
+
+message "Disable unattended apt updates"
+echo 'APT::Periodic::Enable "0";' >> /etc/apt/apt.conf.d/10periodic
+
+message "Complete"
