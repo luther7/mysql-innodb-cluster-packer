@@ -8,19 +8,29 @@ function message {
 message "VBox Additions script"
 message "Started"
 
-VBOX_VERSION=$(cat /home/packer/.vbox_version)
-VBOX_GUEST_ADDITIONS_ISO=/home/packer/VBoxGuestAdditions_${VBOX_VERSION}.iso
+VBOX_PACKER_VERSION=$(cat /home/packer/.vbox_version)
+VBOX_VERSION="${VBOX_VERSION:-$VBOX_PACKER_VERSION}"
+VBOX_GUEST_ADDITIONS_URL=http://download.virtualbox.org/virtualbox/${VBOX_VERSION}/VBoxGuestAdditions_${VBOX_VERSION}.iso
+
+message "VBOX_VERSION=${VBOX_VERSION}"
+message "VBOX_PACKER_VERSION=${VBOX_VERSION}"
+message "VBOX_GUEST_ADDITIONS_URL=${VBOX_GUEST_ADDITIONS_URL}"
+
+curl --output VBoxGuestAdditions.iso ${VBOX_GUEST_ADDITIONS_URL}
 
 message "Mounting guest additions ISO"
-mount -o loop ${VBOX_GUEST_ADDITIONS_ISO} /mnt
+mount -o loop VBoxGuestAdditions.iso /mnt
 
 message "Running guest additions script"
-sh /mnt/VBoxLinuxAdditions.run
+sh /mnt/VBoxLinuxAdditions.run --nox11 || true
 
 message "Unmounting guest additions ISO"
 umount /mnt > /dev/null
 
 message "Deleting guest additions ISO"
-rm -rf ${VBOX_GUEST_ADDITIONS_ISO}
+rm -rf VBoxGuestAdditions.iso
+
+message "Reboot"
+reboot
 
 message "Complete"

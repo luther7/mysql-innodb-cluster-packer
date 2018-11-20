@@ -8,6 +8,21 @@ function message {
 message "VBox Setup script"
 message "Started"
 
+message "Installing packages"
+apt-get install -y \
+        cryptsetup \
+        curl \
+        dkms \
+        build-essential \
+        libssl-dev \
+        libreadline-dev \
+        linux-source \
+        nfs-common \
+        perl \
+        vim \
+        virtualbox-guest-dkms \
+        zlib1g-dev
+
 message "Add packer user to sudoers"
 echo 'packer ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/99_packer
 chmod 440 /etc/sudoers.d/99_packer

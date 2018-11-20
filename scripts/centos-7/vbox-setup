@@ -8,4 +8,22 @@ function message {
 message "VBox Setup script"
 message "Started"
 
+message "Installing packages"
+yum -y install \
+    bzip2 \
+    curl \
+    dkms \
+    gcc \
+    kernel-headers \
+    kernel-devel \
+    make \
+    net-tools \
+    nfs-utils \
+    openssh-clients \
+    openssl-devel \
+    perl \
+    readline-devel \
+    unzip \
+    vim-minimal
+
 message "Complete"

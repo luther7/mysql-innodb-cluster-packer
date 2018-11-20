@@ -1,5 +1,6 @@
 {
     "variables": {
+        "virtualbox_version": "5.2.20"
     },
     "builders": [
         {
@@ -15,7 +16,7 @@
             ],
             "boot_wait": "6s",
 
-            "guest_additions_path": "VBoxGuestAdditions_{{ .Version }}.iso",
+            "guest_additions_mode": "disable",
             "virtualbox_version_file": ".vbox_version",
 
             "guest_os_type": "Redhat_64",
@@ -73,7 +74,7 @@
             ],
             "boot_wait": "6s",
 
-            "guest_additions_path": "VBoxGuestAdditions_{{ .Version }}.iso",
+            "guest_additions_mode": "disable",
             "virtualbox_version_file": ".vbox_version",
 
             "guest_os_type": "Ubuntu_64",
@@ -112,18 +113,22 @@
         {
             "type": "shell",
             "execute_command": "echo 'packer' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
-            "script": "scripts/vbox-additions"
+            "environment_vars": ["VBOX_VERSION={{ user `virtualbox_version` }}"],
+            "script": "scripts/vbox-additions",
+            "expect_disconnect": true
         },
         {
             "type": "shell",
             "execute_command": "echo 'packer' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
             "script": "scripts/centos-7/vbox-cleanup",
+            "pause_before": "20s",
             "only": ["centos-7"]
         },
         {
             "type": "shell",
             "execute_command": "echo 'packer' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
             "script": "scripts/ubuntu-18/vbox-cleanup",
+            "pause_before": "20s",
             "only": ["ubuntu-18"]
         }
     ],
