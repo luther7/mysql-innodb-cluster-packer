@@ -8,12 +8,14 @@ function message {
 message "VBox Additions script"
 message "Started"
 
+message "VBOX_VERSION=${VBOX_VERSION}"
+
 VBOX_PACKER_VERSION=$(cat /home/packer/.vbox_version)
 VBOX_VERSION="${VBOX_VERSION:-$VBOX_PACKER_VERSION}"
 VBOX_GUEST_ADDITIONS_URL=http://download.virtualbox.org/virtualbox/${VBOX_VERSION}/VBoxGuestAdditions_${VBOX_VERSION}.iso
 
-message "VBOX_VERSION=${VBOX_VERSION}"
-message "VBOX_PACKER_VERSION=${VBOX_VERSION}"
+message "VBOX_PACKER_VERSION=${VBOX_PACKER_VERSION}"
+message "Using VBOX_VERSION=${VBOX_VERSION}"
 message "VBOX_GUEST_ADDITIONS_URL=${VBOX_GUEST_ADDITIONS_URL}"
 
 curl --output VBoxGuestAdditions.iso ${VBOX_GUEST_ADDITIONS_URL}
