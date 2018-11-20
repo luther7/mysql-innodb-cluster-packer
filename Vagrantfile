@@ -1,3 +1,5 @@
+box = ENV["VAGRANT_BOX"] || "centos-7"
+
 $set_consul_env = <<-SCRIPT
 cat > /var/run/consul/env <<EOF
 CONSUL_ADVERTISE=-advertise ${1}
@@ -6,8 +8,7 @@ EOF
 SCRIPT
 
 Vagrant.configure("2") do |config|
-  #config.vm.box = "file://build/mysql-8-centos-7-x86_64.box"
-  config.vm.box = "file://build/mysql-8-ubuntu-18.04.1-x86_64.box"
+  config.vm.box = "mysql-8-#{box}"
   config.vm.synced_folder ".", "/vagrant"
   config.ssh.username = "packer"
   config.ssh.password = "packer"
@@ -20,10 +21,10 @@ Vagrant.configure("2") do |config|
         vm.cpus   = 1
         vm.memory = 512
       end
-      config.vm.provision "shell" do |script|
-        script.inline = $set_consul_env
-        script.args   = ["10.0.0.#{n+1}", "3"]
-      end
+      #config.vm.provision "shell" do |script|
+      #  script.inline = $set_consul_env
+      #  script.args   = ["10.0.0.#{n+1}", "3"]
+      #end
     end
   end
 end
