@@ -13,7 +13,12 @@ function message {
 }
 
 message "MySQL 8 install script"
-
+message "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
+message "MYSQL_SERVER_VERSION=${MYSQL_SERVER_VERSION}"
+message "MYSQL_SHELL_VERSION=${MYSQL_SHELL_VERSION}"
+message "MYSQL_URL=${MYSQL_URL}"
+message "MYSQL_CHECKSUM=${MYSQL_CHECKSUM}"
+message "MYSQL_REPO=${MYSQL_REPO}"
 message "Started"
 
 message "Checking for existing MySQL repo"
