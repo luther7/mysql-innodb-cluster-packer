@@ -6,9 +6,9 @@
         {
             "name": "centos-7",
             "type": "virtualbox-iso",
-            "vm_name": "mysql-8-centos-7-x86_64",
+            "vm_name": "mysql-8-centos-7.5.1804-x86_64",
 
-            "headless": "false",
+            "headless": "true",
 
             "http_directory": "http",
             "boot_command": [
@@ -44,7 +44,7 @@
             "type": "virtualbox-iso",
             "vm_name": "mysql-8-ubuntu-18.04.1-x86_64",
 
-            "headless": "false",
+            "headless": "true",
 
             "http_directory": "http",
             "boot_command": [
@@ -114,14 +114,12 @@
             "type": "shell",
             "execute_command": "echo 'packer' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
             "environment_vars": ["VBOX_VERSION={{ user `virtualbox_version` }}"],
-            "script": "scripts/vbox-additions",
-            "expect_disconnect": true
+            "script": "scripts/vbox-additions"
         },
         {
             "type": "shell",
             "execute_command": "echo 'packer' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
             "script": "scripts/centos-7/vbox-cleanup",
-            "pause_before": "20s",
             "only": ["centos-7"]
         },
         {
@@ -130,17 +128,32 @@
             "script": "scripts/ubuntu-18/vbox-cleanup",
             "pause_before": "20s",
             "only": ["ubuntu-18"]
+        },
+        {
+            "type": "shell",
+            "execute_command": "echo 'packer' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
+            "script": "scripts/zero"
         }
     ],
     "post-processors": [
         {
             "type": "vagrant",
-            "output": "build/mysql-8-centos-7-x86_64.box",
+            "output": "build/mysql-8-centos-7.5.1804-x86_64.box",
             "only": ["centos-7"]
         },
         {
             "type": "vagrant",
             "output": "build/mysql-8-ubuntu-18.04.1-x86_64.box",
+            "only": ["ubuntu-18"]
+        },
+        {
+            "type": "shell-local",
+            "inline": "vagrant box add --force --name mysql-8-centos-7 build/mysql-8-centos-7.5.1804-x86_64.box",
+            "only": ["centos-7"]
+        },
+        {
+            "type": "shell-local",
+            "inline": "vagrant box add --force --name mysql-8-ubuntu-18 build/mysql-8-ubuntu-18.04.1-x86_64.box",
             "only": ["ubuntu-18"]
         }
     ]
