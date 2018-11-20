@@ -21,7 +21,7 @@
 
             "guest_os_type": "Redhat_64",
             "iso_urls": [
-                "CentOS-7-x86_64-DVD-1804.iso",
+                "iso/CentOS-7-x86_64-DVD-1804.iso",
                 "https://mirror.aarnet.edu.au/pub/centos/7.5.1804/isos/x86_64/CentOS-7-x86_64-DVD-1804.iso"
             ],
             "iso_checksum": "506e4e06abf778c3435b4e5745df13e79ebfc86565d7ea1e128067ef6b5a6345",
