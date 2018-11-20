@@ -1,4 +1,4 @@
-# MySQL 8 InnoDB Cluster Packer Template
+# MySQL InnoDB Cluster Packer Template
 
 **WIP**
 
