@@ -32,7 +32,4 @@ umount /mnt > /dev/null
 message "Deleting guest additions ISO"
 rm -rf VBoxGuestAdditions.iso
 
-message "Reboot"
-reboot
-
 message "Complete"
