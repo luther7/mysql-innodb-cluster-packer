@@ -20,6 +20,10 @@ build-ubuntu: build
 clean:
 	rm -rf output*
 
+.PHONY: check
+check:
+	find scripts -type f | xargs shellcheck
+
 .PHONY: up-centos
 up-centos:
 	VAGRANT_BOX=centos-7 vagrant up

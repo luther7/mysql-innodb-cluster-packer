@@ -4,8 +4,8 @@ set -e
 
 CONSUL_VERSION=1.3.0
 CONSUL_CHECKSUM=a6896509b72fa229496b3adda51357c95d68a796ae3328d7d6a61195d6c68bac
-CONSUL_PACKAGE=consul_${CONSUL_VERSION}_linux_amd64.zip
-CONSUL_URL=https://releases.hashicorp.com/consul/${CONSUL_VERSION}/${CONSUL_PACKAGE}
+CONSUL_PACKAGE="consul_${CONSUL_VERSION}_linux_amd64.zip"
+CONSUL_URL="https://releases.hashicorp.com/consul/${CONSUL_VERSION}/${CONSUL_PACKAGE}"
 CONSUL_USER=consul
 CONSUL_BIN_DIR=/usr/local/bin
 CONSUL_CONFIG_DIR=/etc/consul.d
@@ -13,7 +13,7 @@ CONSUL_DATA_DIR=/opt/consul/data
 CONSUL_RUN_DIR=/var/run/consul
 CONSUL_CONFIG_FILE=server_agent.json
 CONSUL_PID_FILE=consul.pid
-CONSUL_ENV_FILE=env
+CONSUL_ENV_FILE="env"
 
 function message {
     TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
@@ -36,31 +36,31 @@ message "CONSUL_ENV_FILE=${CONSUL_ENV_FILE}"
 message "Started"
 
 message "Checking for existing Consul user"
-if id --user ${CONSUL_USER} > /dev/null 2>&1
+if id --user "${CONSUL_USER}" > /dev/null 2>&1
 then
     message "Consul user exists"
 else
     message "Creating Consul user"
-    useradd --no-create-home --system ${CONSUL_USER}
+    useradd --no-create-home --system "${CONSUL_USER}"
 fi
 
 message "Create Consul config directory"
-mkdir -p ${CONSUL_CONFIG_DIR}
-chown ${CONSUL_USER}:${CONSUL_USER} ${CONSUL_CONFIG_DIR}
+mkdir -p "${CONSUL_CONFIG_DIR}"
+chown "${CONSUL_USER}":"${CONSUL_USER}" "${CONSUL_CONFIG_DIR}"
 
 message "Create Consul data directory"
-mkdir -p ${CONSUL_DATA_DIR}
-chown ${CONSUL_USER}:${CONSUL_USER} ${CONSUL_DATA_DIR}
+mkdir -p "${CONSUL_DATA_DIR}"
+chown "${CONSUL_USER}:${CONSUL_USER}" "${CONSUL_DATA_DIR}"
 
 message "Create Consul run directory"
-mkdir -p ${CONSUL_RUN_DIR}
-chown ${CONSUL_USER}:${CONSUL_USER} ${CONSUL_RUN_DIR}
+mkdir -p "${CONSUL_RUN_DIR}"
+chown "${CONSUL_USER}":"${CONSUL_USER}" "${CONSUL_RUN_DIR}"
 
 message "Checking for existing Consul package"
-if [ ! -f /tmp/${CONSUL_PACKAGE} ]
+if [ ! -f "/tmp/${CONSUL_PACKAGE}" ]
 then
     message "Downloading Consul package"
-    curl --silent --location --output /tmp/${CONSUL_PACKAGE} ${CONSUL_URL}
+    curl --silent --location --output "/tmp/${CONSUL_PACKAGE}" "${CONSUL_URL}"
 else
     message "Consul package exists, skipping download"
 fi
@@ -71,14 +71,14 @@ sha256sum --quiet --check /tmp/consul-checksum
 rm /tmp/consul-checksum
 
 message "Installing Consul"
-unzip -q -o /tmp/${CONSUL_PACKAGE} -d /tmp
+unzip -q -o "/tmp/${CONSUL_PACKAGE}" -d /tmp
 chmod a+x /tmp/consul
-chown ${CONSUL_USER}:${CONSUL_USER} /tmp/consul
-mv /tmp/consul ${CONSUL_BIN_DIR}/consul
-rm /tmp/${CONSUL_PACKAGE}
+chown "${CONSUL_USER}":"${CONSUL_USER}" /tmp/consul
+mv /tmp/consul "${CONSUL_BIN_DIR}/consul"
+rm "/tmp/${CONSUL_PACKAGE}"
 
 message "Installing Consul config file"
-cat > ${CONSUL_CONFIG_DIR}/${CONSUL_CONFIG_FILE} <<EOF
+cat > "${CONSUL_CONFIG_DIR}/${CONSUL_CONFIG_FILE}" <<EOF
 {
   "server": true,
   "bind_addr": "0.0.0.0",
@@ -89,18 +89,18 @@ cat > ${CONSUL_CONFIG_DIR}/${CONSUL_CONFIG_FILE} <<EOF
   "data_dir": "${CONSUL_DATA_DIR}"
 }
 EOF
-chown ${CONSUL_USER}:${CONSUL_USER} ${CONSUL_CONFIG_DIR}/${CONSUL_CONFIG_FILE}
+chown "${CONSUL_USER}":"${CONSUL_USER}" "${CONSUL_CONFIG_DIR}/${CONSUL_CONFIG_FILE}"
 
 message "Touch Consul environment file"
-touch ${CONSUL_RUN_DIR}/${CONSUL_ENV_FILE}
-chown ${CONSUL_USER}:${CONSUL_USER} ${CONSUL_RUN_DIR}/${CONSUL_ENV_FILE}
+touch "${CONSUL_RUN_DIR}/${CONSUL_ENV_FILE}"
+chown "${CONSUL_USER}:${CONSUL_USER}" "${CONSUL_RUN_DIR}/${CONSUL_ENV_FILE}"
 
 message "Installing Consul systemd Unit file"
 cat > /etc/systemd/system/consul.service <<EOF
 ### BEGIN INIT INFO
 # Provides:          consul
-# Required-Start:    $local_fs $remote_fs
-# Required-Stop:     $local_fs $remote_fs
+# Required-Start:    \$local_fs \$remote_fs
+# Required-Stop:     \$local_fs \$remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Consul agent

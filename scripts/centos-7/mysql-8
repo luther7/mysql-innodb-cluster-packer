@@ -3,7 +3,7 @@
 MYSQL_PASSWORD=Password1234!
 MYSQL_SERVER_VERSION=8.0.13.el7
 MYSQL_SHELL_VERSION=8.0.13.el7
-MYSQL_URL=https://dev.mysql.com/downloads/file/?id=477146
+MYSQL_URL="https://dev.mysql.com/downloads/file/?id=477146"
 MYSQL_CHECKSUM=739dc44566d739c5d7b893de96ee6848
 MYSQL_REPO=mysql80-community-release-el7-1.noarch.rpm
 
@@ -22,10 +22,10 @@ message "MYSQL_REPO=${MYSQL_REPO}"
 message "Started"
 
 message "Checking for existing MySQL repo"
-if [ ! -f /tmp/${MYSQL_REPO} ]
+if [ ! -f "/tmp/${MYSQL_REPO}" ]
 then
     message "Downloading MySQL repo"
-    curl --silent --location --output /tmp/${MYSQL_REPO} ${MYSQL_URL}
+    curl --silent --location --output "/tmp/${MYSQL_REPO}" "${MYSQL_URL}"
 else
     message "MySQL repo exists, skipping download"
 fi
@@ -36,14 +36,14 @@ md5sum --quiet --check /tmp/mysql-checksum
 rm /tmp/mysql-checksum
 
 message "Installing MySQL repo"
-rpm -Uvh /tmp/${MYSQL_REPO}
-rm /tmp/${MYSQL_REPO}
+rpm -Uvh "/tmp/${MYSQL_REPO}"
+rm "/tmp/${MYSQL_REPO}"
 
 message "Installing MySQL server"
-yum install -y mysql-community-server-${MYSQL_SERVER_VERSION}
+yum install -y "mysql-community-server-${MYSQL_SERVER_VERSION}"
 
 message "Installing MySQL shell"
-yum install -y mysql-shell-${MYSQL_SHELL_VERSION}
+yum install -y "mysql-shell-${MYSQL_SHELL_VERSION}"
 
 message "Enabling and starting MySQL service"
 systemctl --quiet enable mysqld.service
@@ -56,7 +56,7 @@ message "Change temporary root password"
 MYSQL_TMP_PASSWORD=$(grep 'temporary password' /var/log/mysqld.log)
 mysql \
     --user=root \
-    --password=${MYSQL_TMP_PASSWORD} \
+    --password="${MYSQL_TMP_PASSWORD}" \
     --execute="ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';" \
     > /dev/null
 
