@@ -1,6 +1,6 @@
 {
     "variables": {
-        "virtualbox_version": "5.2.20"
+        "virtualbox_version": "5.2.22"
     },
     "builders": [
         {
