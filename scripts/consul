@@ -1,6 +1,4 @@
-#!/bin/bash -eux
-
-set -e
+#!/bin/bash -e
 
 CONSUL_VERSION=1.3.0
 CONSUL_CHECKSUM=a6896509b72fa229496b3adda51357c95d68a796ae3328d7d6a61195d6c68bac

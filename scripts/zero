@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -e
 
 function message {
     TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
