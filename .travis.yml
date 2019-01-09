@@ -1,0 +1,11 @@
+
+language: bash
+
+before_install:
+  - git clone https://github.com/TravisToolbox/shellcheck-travis.git
+
+install:
+  - "./shellcheck-travis/install.sh"
+
+script:
+  - "./shellcheck-travis/scan.sh"
