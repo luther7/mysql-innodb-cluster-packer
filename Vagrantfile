@@ -2,8 +2,8 @@ box = ENV["VAGRANT_BOX"] || "centos-7"
 
 $set_consul_env = <<-SCRIPT
 cat > /var/run/consul/env <<EOF
-CONSUL_ADVERTISE=-advertise ${1}
-CONSUL_BOOTSTRAP_EXPECT=-bootstrap-expect=${2}
+CONSUL_ADVERTISE="-advertise=${1}"
+CONSUL_BOOTSTRAP_EXPECT="-bootstrap-expect=${2}"
 EOF
 SCRIPT
 
