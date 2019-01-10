@@ -13,7 +13,7 @@ build-centos: PACKER_ARGS=-only=centos-7
 build-centos: build
 
 .PHONY: build-ubuntu
-build-ubuntu: PACKER_ARGS=-only=ubuntu-7
+build-ubuntu: PACKER_ARGS=-only=ubuntu-18
 build-ubuntu: build
 
 .PHONY: clean
