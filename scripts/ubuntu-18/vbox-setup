@@ -10,6 +10,7 @@ message "Started"
 
 message "Installing packages"
 apt-get install -y \
+        unzip \
         cryptsetup \
         curl \
         dkms \
