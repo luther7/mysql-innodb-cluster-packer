@@ -1,6 +1,6 @@
 {
     "variables": {
-        "virtualbox_version": "5.2.22"
+        "virtualbox_version": "6.0.0"
     },
     "builders": [
         {
@@ -133,6 +133,11 @@
             "type": "shell",
             "execute_command": "echo 'packer' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
             "script": "scripts/zero"
+        },
+        {
+            "type": "shell",
+            "execute_command": "echo 'packer' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
+            "script": "scripts/consul"
         }
     ],
     "post-processors": [
