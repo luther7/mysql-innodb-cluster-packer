@@ -1,10 +1,11 @@
 box = ENV["VAGRANT_BOX"] || "centos-7"
 
 $set_consul_env = <<-SCRIPT
-cat > /var/run/consul/env <<EOF
-CONSUL_ADVERTISE="-advertise=${1}"
-CONSUL_BOOTSTRAP_EXPECT="-bootstrap-expect=${2}"
-EOF
+sudo mkdir -p /var/run/consul
+sudo echo "CONSUL_ADVERTISE=\"-advertise=${1}\"" > /var/run/consul/env
+sudo echo "CONSUL_BOOTSTRAP_EXPECT=\"-bootstrap-expect=${2}\"" >> /var/run/consul/env
+sudo chown -R consul:consul /var/run/consul
+sudo systemctl restart consul
 SCRIPT
 
 Vagrant.configure("2") do |config|
@@ -13,7 +14,7 @@ Vagrant.configure("2") do |config|
   config.ssh.username = "packer"
   config.ssh.password = "packer"
   config.ssh.insert_key = false
-  (1..3).each do |n|
+  (1..1).each do |n|
     config.vm.define "mysql-#{n}" do |node|
       node.vm.network :private_network, ip: "10.0.0.#{n+1}"
       config.vm.provider :node do |vm|
@@ -21,10 +22,10 @@ Vagrant.configure("2") do |config|
         vm.cpus   = 1
         vm.memory = 512
       end
-      #config.vm.provision "shell" do |script|
-      #  script.inline = $set_consul_env
-      #  script.args   = ["10.0.0.#{n+1}", "3"]
-      #end
+      config.vm.provision "shell" do |script|
+        script.inline = $set_consul_env
+        script.args   = ["10.0.0.#{n+1}", "3"]
+      end
     end
   end
 end
