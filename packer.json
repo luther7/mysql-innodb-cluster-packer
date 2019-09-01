@@ -1,6 +1,6 @@
 {
     "variables": {
-        "virtualbox_version": "6.0.0",
+        "virtualbox_version": "6.0.10",
         "mysql_password": "mysql"
     },
     "builders": [
@@ -22,11 +22,10 @@
 
             "guest_os_type": "Redhat_64",
             "iso_urls": [
-                "iso/CentOS-7.iso",
+                "iso/centos-7.iso",
                 "https://mirror.aarnet.edu.au/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1810.iso"
             ],
-            "iso_checksum": "506e4e06abf778c3435b4e5745df13e79ebfc86565d7ea1e128067ef6b5a6345",
-
+            "iso_checksum": "6d44331cc4f6c506c7bbe9feb8468fad6c51a88ca1393ca6b8b486ea04bec3c1",
             "iso_checksum_type": "sha256",
 
             "vboxmanage": [
@@ -83,7 +82,7 @@
                 "iso/ubuntu-18.iso",
                 "http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/ubuntu-18.04.3-server-amd64.iso"
             ],
-            "iso_checksum": "a5b0ea5918f850124f3d72ef4b85bda82f0fcd02ec721be19c1a6952791c8ee8",
+            "iso_checksum": "7d8e0055d663bffa27c1718685085626cb59346e7626ba3d3f476322271f573e",
             "iso_checksum_type": "sha256",
 
             "vboxmanage": [
@@ -156,7 +155,7 @@
         },
         {
             "type": "vagrant",
-            "output": "build/mysql-8-ubuntu-18.04.box",
+            "output": "build/mysql-8-ubuntu-18.box",
             "only": ["ubuntu-18"]
         },
         {
