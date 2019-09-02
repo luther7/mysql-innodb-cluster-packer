@@ -1,0 +1,89 @@
+#!/bin/bash -e
+
+MYSQL_URL="https://dev.mysql.com/get/mysql-apt-config_0.8.13-1_all.deb"
+MYSQL_CHECKSUM=0212f2f1aaa46ccae8bc7a65322be22e
+MYSQL_REPO=mysql-apt-config_0.8.13-1_all.deb
+
+function message {
+    TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+    echo -e "[${TIMESTAMP}] [mysql-8] ${1}"
+}
+
+message "MySQL 8 install script"
+
+if [ -z "${MYSQL_PASSWORD}" ]; then
+  message "ERROR: Require 'MYSQL_PASSWORD' to be set"
+  exit 1
+fi
+
+message "MYSQL_URL=${MYSQL_URL}"
+message "MYSQL_CHECKSUM=${MYSQL_CHECKSUM}"
+message "MYSQL_REPO=${MYSQL_REPO}"
+message "Started"
+
+export DEBIAN_FRONTEND=noninteractive
+
+message "Checking for existing MySQL repo"
+if [ ! -f "/tmp/${MYSQL_REPO}" ]
+then
+    message "Downloading MySQL repo"
+    curl --silent --location --output "/tmp/${MYSQL_REPO}" "${MYSQL_URL}"
+
+    message "Checking MySQL repo"
+    echo "${MYSQL_CHECKSUM}  /tmp/${MYSQL_REPO}" > /tmp/mysql-checksum
+    md5sum --quiet --check /tmp/mysql-checksum
+    rm /tmp/mysql-checksum
+
+    message "Installing MySQL repo"
+    dpkg -i "/tmp/${MYSQL_REPO}"
+    rm "/tmp/${MYSQL_REPO}"
+else
+    message "MySQL repo exists, skipping download"
+fi
+
+message "Updating package info"
+apt-get update -y
+
+message "Installing expect"
+apt-get install -y "expect"
+
+message "Installing MySQL server"
+apt-get install -y "mysql-community-server"
+
+message "Installing MySQL shell"
+apt-get install -y "mysql-shell"
+
+message "Enabling and starting MySQL service"
+systemctl --quiet enable mysql.service
+systemctl --quiet start mysql.service
+
+message "Wait for 60s for MySQL to start"
+sleep 60
+
+message "Secure installation"
+EXPECT=$(expect -c "
+set timeout 10
+spawn mysql_secure_installation
+expect \"Press y|Y for Yes, any other key for No: \"
+send \"n\r\"
+expect \"New password: \"
+send \"${MYSQL_PASSWORD}\r\"
+expect \"Re-enter new password: \"
+send \"${MYSQL_PASSWORD}\r\"
+expect \"Remove anonymous users? (Press y|Y for Yes, any other key for No) : \"
+send \"y\r\"
+expect \"Disallow root login remotely? (Press y|Y for Yes, any other key for No) : \"
+send \"y\r\"
+expect \"Remove test database and access to it? (Press y|Y for Yes, any other key for No) : \"
+send \"y\r\"
+expect \"Reload privilege tables now? (Press y|Y for Yes, any other key for No) : \"
+send \"y\r\"
+expect eof
+")
+
+echo "${EXPECT}"
+
+message "Stop MySQL service"
+systemctl --quiet stop mysql.service
+
+message "Complete"
