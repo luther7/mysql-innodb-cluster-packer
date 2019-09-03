@@ -5,6 +5,7 @@ sudo mkdir -p /var/run/consul
 sudo echo "CONSUL_ADVERTISE=\"-advertise=${1}\"" > /var/run/consul/env
 sudo echo "CONSUL_BOOTSTRAP_EXPECT=\"-bootstrap-expect=${2}\"" >> /var/run/consul/env
 sudo chown -R consul:consul /var/run/consul
+sudo iptables -F
 sudo systemctl restart consul
 SCRIPT
 
@@ -14,17 +15,20 @@ Vagrant.configure("2") do |config|
   config.ssh.username = "packer"
   config.ssh.password = "packer"
   config.ssh.insert_key = false
-  (1..1).each do |n|
-    config.vm.define "mysql-#{n}" do |node|
-      node.vm.network :private_network, ip: "10.0.0.#{n+1}"
-      config.vm.provider :node do |vm|
+
+  (1..3).each do |i|
+    config.vm.define "mysql-#{i}" do |node|
+      ip = "10.0.0.#{i+1}"
+      node.vm.hostname = "mysql-#{i}"
+      node.vm.network :private_network, ip: ip
+      node.vm.provider :node do |vm|
         vm.gui    = false
         vm.cpus   = 1
         vm.memory = 512
       end
-      config.vm.provision "shell" do |script|
+      node.vm.provision "shell" do |script|
         script.inline = $set_consul_env
-        script.args   = ["10.0.0.#{n+1}", "3"]
+        script.args   = [ip, "3"]
       end
     end
   end
