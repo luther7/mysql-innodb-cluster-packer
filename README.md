@@ -19,6 +19,6 @@ The Make targets described above will created images based on CentOS 7. You can 
 - [X] Consul install script
 - [X] CentOS MySQL 8 install script
 - [X] Ubuntu MySQL 8 install script
-- [ ] InnoDB Cluster Consul service
+- [X] InnoDB Cluster Consul service
 - [ ] Bootstrap InnoDB Cluster via Consul watcher
 - [ ] Rejoin missing nodes via Consul watcher

@@ -117,10 +117,10 @@ PIDFile=${CONSUL_RUN_DIR}/${CONSUL_PID_FILE}
 PermissionsStartOnly=true
 EnvironmentFile=${CONSUL_RUN_DIR}/${CONSUL_ENV_FILE}
 ExecStart=${CONSUL_BIN_DIR}/consul agent \
-  -config-file=${CONSUL_CONFIG_DIR}/${CONSUL_CONFIG_FILE} \
-  -pid-file=${CONSUL_RUN_DIR}/${CONSUL_PID_FILE} \
-  \${CONSUL_ADVERTISE} \
-  \${CONSUL_BOOTSTRAP_EXPECT}
+-config-dir=${CONSUL_CONFIG_DIR} \
+-pid-file=${CONSUL_RUN_DIR}/${CONSUL_PID_FILE} \
+\${CONSUL_ADVERTISE} \
+\${CONSUL_BOOTSTRAP_EXPECT}
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 KillSignal=SIGTERM

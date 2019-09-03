@@ -7,6 +7,10 @@ sudo echo "CONSUL_BOOTSTRAP_EXPECT=\"-bootstrap-expect=${2}\"" >> /var/run/consu
 sudo chown -R consul:consul /var/run/consul
 sudo iptables -F
 sudo systemctl restart consul
+# TODO This should not be needed - the cluster should automatically bootstrap.
+sudo consul join 10.0.0.2
+sudo consul join 10.0.0.3
+sudo consul join 10.0.0.4
 SCRIPT
 
 Vagrant.configure("2") do |config|
