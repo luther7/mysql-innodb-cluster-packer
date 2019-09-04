@@ -2,6 +2,7 @@
 
 CONSUL_USER=consul
 CONSUL_CONFIG_DIR=/etc/consul.d
+CONSUL_CONFIG_FILE=mysql.json
 
 function message {
     TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
@@ -11,6 +12,7 @@ function message {
 message "Consul MySQL service install script"
 message "CONSUL_USER=${CONSUL_USER}"
 message "CONSUL_CONFIG_DIR=${CONSUL_CONFIG_DIR}"
+message "CONSUL_CONFIG_FILE=${CONSUL_CONFIG_FILE}"
 message "Started"
 
 message "Installing Consul MySQL Service config file"

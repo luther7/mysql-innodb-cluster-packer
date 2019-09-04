@@ -152,6 +152,11 @@
             "script": "scripts/ubuntu-18/mysql-8",
             "only": ["ubuntu-18"],
             "environment_vars": ["MYSQL_PASSWORD={{ user `mysql_password` }}"]
+        },
+        {
+            "type": "shell",
+            "execute_command": "echo 'packer' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
+            "script": "scripts/consul-mysql"
         }
     ],
     "post-processors": [
